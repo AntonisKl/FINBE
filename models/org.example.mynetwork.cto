@@ -14,12 +14,12 @@ asset ClientInfo identified by clientId {
     o String profession
     o String telNumber
     o Double income
+    --> Bank[] banks
 }
 participant Bank identified by bankId {
     o String bankId
     o String name
     o String swiftCode
-    --> ClientInfo[] clientInfos
 }
 transaction ClientInfoTransfer {
     --> ClientInfo clientInfo
