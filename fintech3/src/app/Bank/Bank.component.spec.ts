@@ -21,25 +21,25 @@ import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import * as sinon from 'sinon';
 import { DataService } from '../data.service';
-import { CommodityComponent } from './Commodity.component';
-import { CommodityService } from './Commodity.service';
-import { Observable } from 'rxjs'
+import { BankComponent } from './Bank.component';
+import { BankService } from './Bank.service';
+import { Observable } from 'rxjs';
 
-describe('CommodityComponent', () => {
-  let component: CommodityComponent;
-  let fixture: ComponentFixture<CommodityComponent>;
+describe('BankComponent', () => {
+  let component: BankComponent;
+  let fixture: ComponentFixture<BankComponent>;
 
-  let mockCommodityService;
+  let mockBankService;
   let mockDataService
 
   beforeEach(async(() => {
 
-    mockCommodityService = sinon.createStubInstance(CommodityService);
-    mockCommodityService.getAll.returns([]);
+    mockBankService = sinon.createStubInstance(BankService);
+    mockBankService.getAll.returns([]);
     mockDataService = sinon.createStubInstance(DataService);
 
     TestBed.configureTestingModule({
-      declarations: [ CommodityComponent ],
+      declarations: [ BankComponent ],
       imports: [
         BrowserModule,
         FormsModule,
@@ -47,12 +47,12 @@ describe('CommodityComponent', () => {
         HttpModule
       ],
       providers: [
-        {provide: CommodityService, useValue: mockCommodityService },
+        {provide: BankService, useValue: mockBankService },
         {provide: DataService, useValue: mockDataService },
       ]
     });
 
-    fixture = TestBed.createComponent(CommodityComponent);
+    fixture = TestBed.createComponent(BankComponent);
     component = fixture.componentInstance;
 
   }));
@@ -61,35 +61,35 @@ describe('CommodityComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should update the table when a Commodity is added', fakeAsync(() => {
+  it('should update the table when a Bank is added', fakeAsync(() => {
     let loadAllSpy = sinon.stub(component, 'loadAll');
-    sinon.stub(component.serviceCommodity, 'addAsset').returns(new Observable<any>(observer => {
+    sinon.stub(component.serviceBank, 'addParticipant').returns(new Observable(observer => {
       observer.next('');
       observer.complete();
     }));
 
-    component.addAsset({});
+    component.addParticipant({});
 
     tick();
-    
+
     expect(loadAllSpy.callCount).toBe(1);
 
     loadAllSpy.restore();
   }));
 
-  it('should update the table when a Commodity is updated', fakeAsync(() => {
+  it('should update the table when a Bank is updated', fakeAsync(() => {
     let loadAllSpy = sinon.stub(component, 'loadAll');
-    sinon.stub(component.serviceCommodity, 'updateAsset').returns(new Observable<any>(observer => {
+    sinon.stub(component.serviceBank, 'updateParticipant').returns(new Observable(observer => {
       observer.next('');
       observer.complete();
     }));
 
     // mock form to be passed to the update function
     let mockForm = new FormGroup({
-      tradingSymbol: new FormControl('id')
+      bankId: new FormControl('id')
     });
-
-    component.updateAsset(mockForm);
+    
+    component.updateParticipant(mockForm);
 
     tick();
 
@@ -97,23 +97,21 @@ describe('CommodityComponent', () => {
 
     loadAllSpy.restore();
   }));
-
-  it('should update the table when a Commodity is deleted', fakeAsync(() => {
+  
+  it('should update the table when a Bank is deleted', fakeAsync(() => {
     let loadAllSpy = sinon.stub(component, 'loadAll');
-    sinon.stub(component.serviceCommodity, 'deleteAsset').returns(new Observable<any>(observer => {
+    sinon.stub(component.serviceBank, 'deleteParticipant').returns(new Observable(observer => {
       observer.next('');
       observer.complete();
     }));
 
-    component.setId('id');
-    
-    component.deleteAsset();
+    component.deleteParticipant();
 
     tick();
 
     expect(loadAllSpy.callCount).toBe(1);
 
     loadAllSpy.restore();
-  }));  
+  }));
 
 });

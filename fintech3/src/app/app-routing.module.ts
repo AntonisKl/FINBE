@@ -17,17 +17,17 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent } from './home/home.component';
 
-import { CommodityComponent } from './Commodity/Commodity.component';
+import { ClientInfoComponent } from './ClientInfo/ClientInfo.component';
 
-import { TraderComponent } from './Trader/Trader.component';
+import { BankComponent } from './Bank/Bank.component';
 
-import { TradeComponent } from './Trade/Trade.component';
+import { ClientInfoTransferComponent } from './ClientInfoTransfer/ClientInfoTransfer.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'Commodity', component: CommodityComponent },
-  { path: 'Trader', component: TraderComponent },
-  { path: 'Trade', component: TradeComponent },
+  { path: 'ClientInfo', component: ClientInfoComponent },
+  { path: 'Bank', component: BankComponent },
+  { path: 'ClientInfoTransfer', component: ClientInfoTransferComponent },
   { path: '**', redirectTo: '' }
 ];
 

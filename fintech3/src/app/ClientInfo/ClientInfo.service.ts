@@ -15,35 +15,35 @@
 import { Injectable } from '@angular/core';
 import { DataService } from '../data.service';
 import { Observable } from 'rxjs/Observable';
-import { Trader } from '../org.example.mynetwork';
+import { ClientInfo } from '../org.example.mynetwork';
 import 'rxjs/Rx';
 
 // Can be injected into a constructor
 @Injectable()
-export class TraderService {
+export class ClientInfoService {
 
-  private NAMESPACE = 'Trader';
+  private NAMESPACE = 'ClientInfo';
 
-  constructor(private dataService: DataService<Trader>) {
+  constructor(private dataService: DataService<ClientInfo>) {
   };
 
-  public getAll(): Observable<Trader[]> {
+  public getAll(): Observable<ClientInfo[]> {
     return this.dataService.getAll(this.NAMESPACE);
   }
 
-  public getparticipant(id: any): Observable<Trader> {
+  public getAsset(id: any): Observable<ClientInfo> {
     return this.dataService.getSingle(this.NAMESPACE, id);
   }
 
-  public addParticipant(itemToAdd: any): Observable<Trader> {
+  public addAsset(itemToAdd: any): Observable<ClientInfo> {
     return this.dataService.add(this.NAMESPACE, itemToAdd);
   }
 
-  public updateParticipant(id: any, itemToUpdate: any): Observable<Trader> {
+  public updateAsset(id: any, itemToUpdate: any): Observable<ClientInfo> {
     return this.dataService.update(this.NAMESPACE, id, itemToUpdate);
   }
 
-  public deleteParticipant(id: any): Observable<Trader> {
+  public deleteAsset(id: any): Observable<ClientInfo> {
     return this.dataService.delete(this.NAMESPACE, id);
   }
 

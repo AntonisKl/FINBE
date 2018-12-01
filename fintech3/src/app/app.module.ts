@@ -21,19 +21,19 @@ import { DataService } from './data.service';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 
-import { CommodityComponent } from './Commodity/Commodity.component';
+import { ClientInfoComponent } from './ClientInfo/ClientInfo.component';
 
-import { TraderComponent } from './Trader/Trader.component';
+import { BankComponent } from './Bank/Bank.component';
 
-import { TradeComponent } from './Trade/Trade.component';
+import { ClientInfoTransferComponent } from './ClientInfoTransfer/ClientInfoTransfer.component';
 
   @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    CommodityComponent,
-    TraderComponent,
-    TradeComponent
+    ClientInfoComponent,
+    BankComponent,
+    ClientInfoTransferComponent
   ],
   imports: [
     BrowserModule,

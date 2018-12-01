@@ -14,36 +14,34 @@
 
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { TradeService } from './Trade.service';
+import { BankService } from './Bank.service';
 import 'rxjs/add/operator/toPromise';
 
 @Component({
-  selector: 'app-trade',
-  templateUrl: './Trade.component.html',
-  styleUrls: ['./Trade.component.css'],
-  providers: [TradeService]
+  selector: 'app-bank',
+  templateUrl: './Bank.component.html',
+  styleUrls: ['./Bank.component.css'],
+  providers: [BankService]
 })
-export class TradeComponent implements OnInit {
+export class BankComponent implements OnInit {
 
   myForm: FormGroup;
 
-  private allTransactions;
-  private Transaction;
+  private allParticipants;
+  private participant;
   private currentId;
   private errorMessage;
 
-  commodity = new FormControl('', Validators.required);
-  newOwner = new FormControl('', Validators.required);
-  transactionId = new FormControl('', Validators.required);
-  timestamp = new FormControl('', Validators.required);
+  bankId = new FormControl('', Validators.required);
+  name = new FormControl('', Validators.required);
+  swiftCode = new FormControl('', Validators.required);
 
 
-  constructor(private serviceTrade: TradeService, fb: FormBuilder) {
+  constructor(public serviceBank: BankService, fb: FormBuilder) {
     this.myForm = fb.group({
-      commodity: this.commodity,
-      newOwner: this.newOwner,
-      transactionId: this.transactionId,
-      timestamp: this.timestamp
+      bankId: this.bankId,
+      name: this.name,
+      swiftCode: this.swiftCode
     });
   };
 
@@ -53,21 +51,20 @@ export class TradeComponent implements OnInit {
 
   loadAll(): Promise<any> {
     const tempList = [];
-    return this.serviceTrade.getAll()
+    return this.serviceBank.getAll()
     .toPromise()
     .then((result) => {
       this.errorMessage = null;
-      result.forEach(transaction => {
-        tempList.push(transaction);
+      result.forEach(participant => {
+        tempList.push(participant);
       });
-      this.allTransactions = tempList;
+      this.allParticipants = tempList;
     })
     .catch((error) => {
       if (error === 'Server error') {
         this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
       } else if (error === '404 - Not Found') {
         this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
-      } else {
         this.errorMessage = error;
       }
     });
@@ -75,7 +72,7 @@ export class TradeComponent implements OnInit {
 
 	/**
    * Event handler for changing the checked state of a checkbox (handles array enumeration values)
-   * @param {String} name - the name of the transaction field to update
+   * @param {String} name - the name of the participant field to update
    * @param {any} value - the enumeration value for which to toggle the checked state
    */
   changeArrayValue(name: string, value: any): void {
@@ -89,41 +86,39 @@ export class TradeComponent implements OnInit {
 
 	/**
 	 * Checkbox helper, determining whether an enumeration value should be selected or not (for array enumeration values
-   * only). This is used for checkboxes in the transaction updateDialog.
-   * @param {String} name - the name of the transaction field to check
+   * only). This is used for checkboxes in the participant updateDialog.
+   * @param {String} name - the name of the participant field to check
    * @param {any} value - the enumeration value to check for
-   * @return {Boolean} whether the specified transaction field contains the provided value
+   * @return {Boolean} whether the specified participant field contains the provided value
    */
   hasArrayValue(name: string, value: any): boolean {
     return this[name].value.indexOf(value) !== -1;
   }
 
-  addTransaction(form: any): Promise<any> {
-    this.Transaction = {
-      $class: 'org.example.mynetwork.Trade',
-      'commodity': this.commodity.value,
-      'newOwner': this.newOwner.value,
-      'transactionId': this.transactionId.value,
-      'timestamp': this.timestamp.value
+  addParticipant(form: any): Promise<any> {
+    this.participant = {
+      $class: 'org.example.mynetwork.Bank',
+      'bankId': this.bankId.value,
+      'name': this.name.value,
+      'swiftCode': this.swiftCode.value
     };
 
     this.myForm.setValue({
-      'commodity': null,
-      'newOwner': null,
-      'transactionId': null,
-      'timestamp': null
+      'bankId': null,
+      'name': null,
+      'swiftCode': null
     });
 
-    return this.serviceTrade.addTransaction(this.Transaction)
+    return this.serviceBank.addParticipant(this.participant)
     .toPromise()
     .then(() => {
       this.errorMessage = null;
       this.myForm.setValue({
-        'commodity': null,
-        'newOwner': null,
-        'transactionId': null,
-        'timestamp': null
+        'bankId': null,
+        'name': null,
+        'swiftCode': null
       });
+      this.loadAll(); 
     })
     .catch((error) => {
       if (error === 'Server error') {
@@ -134,36 +129,39 @@ export class TradeComponent implements OnInit {
     });
   }
 
-  updateTransaction(form: any): Promise<any> {
-    this.Transaction = {
-      $class: 'org.example.mynetwork.Trade',
-      'commodity': this.commodity.value,
-      'newOwner': this.newOwner.value,
-      'timestamp': this.timestamp.value
+
+   updateParticipant(form: any): Promise<any> {
+    this.participant = {
+      $class: 'org.example.mynetwork.Bank',
+      'name': this.name.value,
+      'swiftCode': this.swiftCode.value
     };
 
-    return this.serviceTrade.updateTransaction(form.get('transactionId').value, this.Transaction)
+    return this.serviceBank.updateParticipant(form.get('bankId').value, this.participant)
     .toPromise()
     .then(() => {
       this.errorMessage = null;
+      this.loadAll();
     })
     .catch((error) => {
       if (error === 'Server error') {
         this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
       } else if (error === '404 - Not Found') {
-      this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
       } else {
         this.errorMessage = error;
       }
     });
   }
 
-  deleteTransaction(): Promise<any> {
 
-    return this.serviceTrade.deleteTransaction(this.currentId)
+  deleteParticipant(): Promise<any> {
+
+    return this.serviceBank.deleteParticipant(this.currentId)
     .toPromise()
     .then(() => {
       this.errorMessage = null;
+      this.loadAll();
     })
     .catch((error) => {
       if (error === 'Server error') {
@@ -182,61 +180,53 @@ export class TradeComponent implements OnInit {
 
   getForm(id: any): Promise<any> {
 
-    return this.serviceTrade.getTransaction(id)
+    return this.serviceBank.getparticipant(id)
     .toPromise()
     .then((result) => {
       this.errorMessage = null;
       const formObject = {
-        'commodity': null,
-        'newOwner': null,
-        'transactionId': null,
-        'timestamp': null
+        'bankId': null,
+        'name': null,
+        'swiftCode': null
       };
 
-      if (result.commodity) {
-        formObject.commodity = result.commodity;
+      if (result.bankId) {
+        formObject.bankId = result.bankId;
       } else {
-        formObject.commodity = null;
+        formObject.bankId = null;
       }
 
-      if (result.newOwner) {
-        formObject.newOwner = result.newOwner;
+      if (result.name) {
+        formObject.name = result.name;
       } else {
-        formObject.newOwner = null;
+        formObject.name = null;
       }
 
-      if (result.transactionId) {
-        formObject.transactionId = result.transactionId;
+      if (result.swiftCode) {
+        formObject.swiftCode = result.swiftCode;
       } else {
-        formObject.transactionId = null;
-      }
-
-      if (result.timestamp) {
-        formObject.timestamp = result.timestamp;
-      } else {
-        formObject.timestamp = null;
+        formObject.swiftCode = null;
       }
 
       this.myForm.setValue(formObject);
-
     })
     .catch((error) => {
       if (error === 'Server error') {
         this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
       } else if (error === '404 - Not Found') {
-      this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
       } else {
         this.errorMessage = error;
       }
     });
+
   }
 
   resetForm(): void {
     this.myForm.setValue({
-      'commodity': null,
-      'newOwner': null,
-      'transactionId': null,
-      'timestamp': null
+      'bankId': null,
+      'name': null,
+      'swiftCode': null
     });
   }
 }

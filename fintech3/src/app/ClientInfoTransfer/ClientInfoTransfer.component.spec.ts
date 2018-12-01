@@ -21,24 +21,24 @@ import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import * as sinon from 'sinon';
 import { DataService } from '../data.service';
-import { TradeComponent } from './Trade.component';
-import {TradeService} from './Trade.service';
+import { ClientInfoTransferComponent } from './ClientInfoTransfer.component';
+import {ClientInfoTransferService} from './ClientInfoTransfer.service';
 
-describe('TradeComponent', () => {
-  let component: TradeComponent;
-  let fixture: ComponentFixture<TradeComponent>;
+describe('ClientInfoTransferComponent', () => {
+  let component: ClientInfoTransferComponent;
+  let fixture: ComponentFixture<ClientInfoTransferComponent>;
 
-  let mockTradeService;
+  let mockClientInfoTransferService;
   let mockDataService
 
   beforeEach(async(() => {
 
-    mockTradeService = sinon.createStubInstance(TradeService);
-    mockTradeService.getAll.returns([]);
+    mockClientInfoTransferService = sinon.createStubInstance(ClientInfoTransferService);
+    mockClientInfoTransferService.getAll.returns([]);
     mockDataService = sinon.createStubInstance(DataService);
 
     TestBed.configureTestingModule({
-      declarations: [ TradeComponent ],
+      declarations: [ ClientInfoTransferComponent ],
       imports: [
         BrowserModule,
         FormsModule,
@@ -46,12 +46,12 @@ describe('TradeComponent', () => {
         HttpModule
       ],
       providers: [
-        {provide: TradeService, useValue: mockTradeService },
+        {provide: ClientInfoTransferService, useValue: mockClientInfoTransferService },
         {provide: DataService, useValue: mockDataService },
       ]
     });
 
-    fixture = TestBed.createComponent(TradeComponent);
+    fixture = TestBed.createComponent(ClientInfoTransferComponent);
     component = fixture.componentInstance;
 
   }));

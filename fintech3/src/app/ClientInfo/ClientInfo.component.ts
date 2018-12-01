@@ -14,16 +14,16 @@
 
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { CommodityService } from './Commodity.service';
+import { ClientInfoService } from './ClientInfo.service';
 import 'rxjs/add/operator/toPromise';
 
 @Component({
-  selector: 'app-commodity',
-  templateUrl: './Commodity.component.html',
-  styleUrls: ['./Commodity.component.css'],
-  providers: [CommodityService]
+  selector: 'app-clientinfo',
+  templateUrl: './ClientInfo.component.html',
+  styleUrls: ['./ClientInfo.component.css'],
+  providers: [ClientInfoService]
 })
-export class CommodityComponent implements OnInit {
+export class ClientInfoComponent implements OnInit {
 
   myForm: FormGroup;
 
@@ -32,19 +32,29 @@ export class CommodityComponent implements OnInit {
   private currentId;
   private errorMessage;
 
-  tradingSymbol = new FormControl('', Validators.required);
-  description = new FormControl('', Validators.required);
-  mainExchange = new FormControl('', Validators.required);
-  quantity = new FormControl('', Validators.required);
-  owner = new FormControl('', Validators.required);
+  clientId = new FormControl('', Validators.required);
+  name = new FormControl('', Validators.required);
+  surname = new FormControl('', Validators.required);
+  idNumber = new FormControl('', Validators.required);
+  placeofBirth = new FormControl('', Validators.required);
+  placeofResidence = new FormControl('', Validators.required);
+  profession = new FormControl('', Validators.required);
+  telNumber = new FormControl('', Validators.required);
+  income = new FormControl('', Validators.required);
+  banks = new FormControl('', Validators.required);
 
-  constructor(public serviceCommodity: CommodityService, fb: FormBuilder) {
+  constructor(public serviceClientInfo: ClientInfoService, fb: FormBuilder) {
     this.myForm = fb.group({
-      tradingSymbol: this.tradingSymbol,
-      description: this.description,
-      mainExchange: this.mainExchange,
-      quantity: this.quantity,
-      owner: this.owner
+      clientId: this.clientId,
+      name: this.name,
+      surname: this.surname,
+      idNumber: this.idNumber,
+      placeofBirth: this.placeofBirth,
+      placeofResidence: this.placeofResidence,
+      profession: this.profession,
+      telNumber: this.telNumber,
+      income: this.income,
+      banks: this.banks
     });
   };
 
@@ -54,7 +64,7 @@ export class CommodityComponent implements OnInit {
 
   loadAll(): Promise<any> {
     const tempList = [];
-    return this.serviceCommodity.getAll()
+    return this.serviceClientInfo.getAll()
     .toPromise()
     .then((result) => {
       this.errorMessage = null;
@@ -101,32 +111,47 @@ export class CommodityComponent implements OnInit {
 
   addAsset(form: any): Promise<any> {
     this.asset = {
-      $class: 'org.example.mynetwork.Commodity',
-      'tradingSymbol': this.tradingSymbol.value,
-      'description': this.description.value,
-      'mainExchange': this.mainExchange.value,
-      'quantity': this.quantity.value,
-      'owner': this.owner.value
+      $class: 'org.example.mynetwork.ClientInfo',
+      'clientId': this.clientId.value,
+      'name': this.name.value,
+      'surname': this.surname.value,
+      'idNumber': this.idNumber.value,
+      'placeofBirth': this.placeofBirth.value,
+      'placeofResidence': this.placeofResidence.value,
+      'profession': this.profession.value,
+      'telNumber': this.telNumber.value,
+      'income': this.income.value,
+      'banks': this.banks.value
     };
 
     this.myForm.setValue({
-      'tradingSymbol': null,
-      'description': null,
-      'mainExchange': null,
-      'quantity': null,
-      'owner': null
+      'clientId': null,
+      'name': null,
+      'surname': null,
+      'idNumber': null,
+      'placeofBirth': null,
+      'placeofResidence': null,
+      'profession': null,
+      'telNumber': null,
+      'income': null,
+      'banks': null
     });
 
-    return this.serviceCommodity.addAsset(this.asset)
+    return this.serviceClientInfo.addAsset(this.asset)
     .toPromise()
     .then(() => {
       this.errorMessage = null;
       this.myForm.setValue({
-        'tradingSymbol': null,
-        'description': null,
-        'mainExchange': null,
-        'quantity': null,
-        'owner': null
+        'clientId': null,
+        'name': null,
+        'surname': null,
+        'idNumber': null,
+        'placeofBirth': null,
+        'placeofResidence': null,
+        'profession': null,
+        'telNumber': null,
+        'income': null,
+        'banks': null
       });
       this.loadAll();
     })
@@ -142,14 +167,19 @@ export class CommodityComponent implements OnInit {
 
   updateAsset(form: any): Promise<any> {
     this.asset = {
-      $class: 'org.example.mynetwork.Commodity',
-      'description': this.description.value,
-      'mainExchange': this.mainExchange.value,
-      'quantity': this.quantity.value,
-      'owner': this.owner.value
+      $class: 'org.example.mynetwork.ClientInfo',
+      'name': this.name.value,
+      'surname': this.surname.value,
+      'idNumber': this.idNumber.value,
+      'placeofBirth': this.placeofBirth.value,
+      'placeofResidence': this.placeofResidence.value,
+      'profession': this.profession.value,
+      'telNumber': this.telNumber.value,
+      'income': this.income.value,
+      'banks': this.banks.value
     };
 
-    return this.serviceCommodity.updateAsset(form.get('tradingSymbol').value, this.asset)
+    return this.serviceClientInfo.updateAsset(form.get('clientId').value, this.asset)
     .toPromise()
     .then(() => {
       this.errorMessage = null;
@@ -169,7 +199,7 @@ export class CommodityComponent implements OnInit {
 
   deleteAsset(): Promise<any> {
 
-    return this.serviceCommodity.deleteAsset(this.currentId)
+    return this.serviceClientInfo.deleteAsset(this.currentId)
     .toPromise()
     .then(() => {
       this.errorMessage = null;
@@ -192,46 +222,81 @@ export class CommodityComponent implements OnInit {
 
   getForm(id: any): Promise<any> {
 
-    return this.serviceCommodity.getAsset(id)
+    return this.serviceClientInfo.getAsset(id)
     .toPromise()
     .then((result) => {
       this.errorMessage = null;
       const formObject = {
-        'tradingSymbol': null,
-        'description': null,
-        'mainExchange': null,
-        'quantity': null,
-        'owner': null
+        'clientId': null,
+        'name': null,
+        'surname': null,
+        'idNumber': null,
+        'placeofBirth': null,
+        'placeofResidence': null,
+        'profession': null,
+        'telNumber': null,
+        'income': null,
+        'banks': null
       };
 
-      if (result.tradingSymbol) {
-        formObject.tradingSymbol = result.tradingSymbol;
+      if (result.clientId) {
+        formObject.clientId = result.clientId;
       } else {
-        formObject.tradingSymbol = null;
+        formObject.clientId = null;
       }
 
-      if (result.description) {
-        formObject.description = result.description;
+      if (result.name) {
+        formObject.name = result.name;
       } else {
-        formObject.description = null;
+        formObject.name = null;
       }
 
-      if (result.mainExchange) {
-        formObject.mainExchange = result.mainExchange;
+      if (result.surname) {
+        formObject.surname = result.surname;
       } else {
-        formObject.mainExchange = null;
+        formObject.surname = null;
       }
 
-      if (result.quantity) {
-        formObject.quantity = result.quantity;
+      if (result.idNumber) {
+        formObject.idNumber = result.idNumber;
       } else {
-        formObject.quantity = null;
+        formObject.idNumber = null;
       }
 
-      if (result.owner) {
-        formObject.owner = result.owner;
+      if (result.placeofBirth) {
+        formObject.placeofBirth = result.placeofBirth;
       } else {
-        formObject.owner = null;
+        formObject.placeofBirth = null;
+      }
+
+      if (result.placeofResidence) {
+        formObject.placeofResidence = result.placeofResidence;
+      } else {
+        formObject.placeofResidence = null;
+      }
+
+      if (result.profession) {
+        formObject.profession = result.profession;
+      } else {
+        formObject.profession = null;
+      }
+
+      if (result.telNumber) {
+        formObject.telNumber = result.telNumber;
+      } else {
+        formObject.telNumber = null;
+      }
+
+      if (result.income) {
+        formObject.income = result.income;
+      } else {
+        formObject.income = null;
+      }
+
+      if (result.banks) {
+        formObject.banks = result.banks;
+      } else {
+        formObject.banks = null;
       }
 
       this.myForm.setValue(formObject);
@@ -250,11 +315,16 @@ export class CommodityComponent implements OnInit {
 
   resetForm(): void {
     this.myForm.setValue({
-      'tradingSymbol': null,
-      'description': null,
-      'mainExchange': null,
-      'quantity': null,
-      'owner': null
+      'clientId': null,
+      'name': null,
+      'surname': null,
+      'idNumber': null,
+      'placeofBirth': null,
+      'placeofResidence': null,
+      'profession': null,
+      'telNumber': null,
+      'income': null,
+      'banks': null
       });
   }
 

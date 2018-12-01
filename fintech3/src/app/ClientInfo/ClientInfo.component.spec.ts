@@ -21,25 +21,25 @@ import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import * as sinon from 'sinon';
 import { DataService } from '../data.service';
-import { TraderComponent } from './Trader.component';
-import { TraderService } from './Trader.service';
-import { Observable } from 'rxjs';
+import { ClientInfoComponent } from './ClientInfo.component';
+import { ClientInfoService } from './ClientInfo.service';
+import { Observable } from 'rxjs'
 
-describe('TraderComponent', () => {
-  let component: TraderComponent;
-  let fixture: ComponentFixture<TraderComponent>;
+describe('ClientInfoComponent', () => {
+  let component: ClientInfoComponent;
+  let fixture: ComponentFixture<ClientInfoComponent>;
 
-  let mockTraderService;
+  let mockClientInfoService;
   let mockDataService
 
   beforeEach(async(() => {
 
-    mockTraderService = sinon.createStubInstance(TraderService);
-    mockTraderService.getAll.returns([]);
+    mockClientInfoService = sinon.createStubInstance(ClientInfoService);
+    mockClientInfoService.getAll.returns([]);
     mockDataService = sinon.createStubInstance(DataService);
 
     TestBed.configureTestingModule({
-      declarations: [ TraderComponent ],
+      declarations: [ ClientInfoComponent ],
       imports: [
         BrowserModule,
         FormsModule,
@@ -47,12 +47,12 @@ describe('TraderComponent', () => {
         HttpModule
       ],
       providers: [
-        {provide: TraderService, useValue: mockTraderService },
+        {provide: ClientInfoService, useValue: mockClientInfoService },
         {provide: DataService, useValue: mockDataService },
       ]
     });
 
-    fixture = TestBed.createComponent(TraderComponent);
+    fixture = TestBed.createComponent(ClientInfoComponent);
     component = fixture.componentInstance;
 
   }));
@@ -61,35 +61,35 @@ describe('TraderComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should update the table when a Trader is added', fakeAsync(() => {
+  it('should update the table when a ClientInfo is added', fakeAsync(() => {
     let loadAllSpy = sinon.stub(component, 'loadAll');
-    sinon.stub(component.serviceTrader, 'addParticipant').returns(new Observable(observer => {
+    sinon.stub(component.serviceClientInfo, 'addAsset').returns(new Observable<any>(observer => {
       observer.next('');
       observer.complete();
     }));
 
-    component.addParticipant({});
+    component.addAsset({});
 
     tick();
-
+    
     expect(loadAllSpy.callCount).toBe(1);
 
     loadAllSpy.restore();
   }));
 
-  it('should update the table when a Trader is updated', fakeAsync(() => {
+  it('should update the table when a ClientInfo is updated', fakeAsync(() => {
     let loadAllSpy = sinon.stub(component, 'loadAll');
-    sinon.stub(component.serviceTrader, 'updateParticipant').returns(new Observable(observer => {
+    sinon.stub(component.serviceClientInfo, 'updateAsset').returns(new Observable<any>(observer => {
       observer.next('');
       observer.complete();
     }));
 
     // mock form to be passed to the update function
     let mockForm = new FormGroup({
-      tradeId: new FormControl('id')
+      clientId: new FormControl('id')
     });
-    
-    component.updateParticipant(mockForm);
+
+    component.updateAsset(mockForm);
 
     tick();
 
@@ -97,21 +97,23 @@ describe('TraderComponent', () => {
 
     loadAllSpy.restore();
   }));
-  
-  it('should update the table when a Trader is deleted', fakeAsync(() => {
+
+  it('should update the table when a ClientInfo is deleted', fakeAsync(() => {
     let loadAllSpy = sinon.stub(component, 'loadAll');
-    sinon.stub(component.serviceTrader, 'deleteParticipant').returns(new Observable(observer => {
+    sinon.stub(component.serviceClientInfo, 'deleteAsset').returns(new Observable<any>(observer => {
       observer.next('');
       observer.complete();
     }));
 
-    component.deleteParticipant();
+    component.setId('id');
+    
+    component.deleteAsset();
 
     tick();
 
     expect(loadAllSpy.callCount).toBe(1);
 
     loadAllSpy.restore();
-  }));
+  }));  
 
 });

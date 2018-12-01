@@ -31,13 +31,13 @@ describe('Starting tests for fintech3', function() {
     })
   });
 
-  it('network-name should be fintech3@0.0.1',() => {
+  it('network-name should be fintech3@0.0.2-deploy.9',() => {
     element(by.css('.network-name')).getWebElement()
     .then((webElement) => {
       return webElement.getText();
     })
     .then((txt) => {
-      expect(txt).toBe('fintech3@0.0.1.bna');
+      expect(txt).toBe('fintech3@0.0.2-deploy.9.bna');
     });
   });
 
@@ -52,39 +52,39 @@ describe('Starting tests for fintech3', function() {
   });
 
   
-    it('Commodity component should be loadable',() => {
-      page.navigateTo('/Commodity');
+    it('ClientInfo component should be loadable',() => {
+      page.navigateTo('/ClientInfo');
       browser.findElement(by.id('assetName'))
       .then((assetName) => {
         return assetName.getText();
       })
       .then((txt) => {
-        expect(txt).toBe('Commodity');
+        expect(txt).toBe('ClientInfo');
       });
     });
 
-    it('Commodity table should have 6 columns',() => {
-      page.navigateTo('/Commodity');
+    it('ClientInfo table should have 11 columns',() => {
+      page.navigateTo('/ClientInfo');
       element.all(by.css('.thead-cols th')).then(function(arr) {
-        expect(arr.length).toEqual(6); // Addition of 1 for 'Action' column
+        expect(arr.length).toEqual(11); // Addition of 1 for 'Action' column
       });
     });
   
 
   
-    it('Trader component should be loadable',() => {
-      page.navigateTo('/Trader');
+    it('Bank component should be loadable',() => {
+      page.navigateTo('/Bank');
       browser.findElement(by.id('participantName'))
       .then((participantName) => {
         return participantName.getText();
       })
       .then((txt) => {
-        expect(txt).toBe('Trader');
+        expect(txt).toBe('Bank');
       });
     });
 
-    it('Trader table should have 4 columns',() => {
-      page.navigateTo('/Trader');
+    it('Bank table should have 4 columns',() => {
+      page.navigateTo('/Bank');
       element.all(by.css('.thead-cols th')).then(function(arr) {
         expect(arr.length).toEqual(4); // Addition of 1 for 'Action' column
       });
@@ -92,14 +92,14 @@ describe('Starting tests for fintech3', function() {
   
 
   
-    it('Trade component should be loadable',() => {
-      page.navigateTo('/Trade');
+    it('ClientInfoTransfer component should be loadable',() => {
+      page.navigateTo('/ClientInfoTransfer');
       browser.findElement(by.id('transactionName'))
       .then((transactionName) => {
         return transactionName.getText();
       })
       .then((txt) => {
-        expect(txt).toBe('Trade');
+        expect(txt).toBe('ClientInfoTransfer');
       });
     });
   
