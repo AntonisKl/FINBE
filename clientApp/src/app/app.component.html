@@ -1,0 +1,55 @@
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">NBG Dashboard</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Clients
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<table style="width:100%;border-spacing: 0 1em;border-collapse:separate;">
+  <tr *ngFor="let key of arrayOfClientKeys">
+    <td>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>{{results[key].name}} {{results[key].surname}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>
+            <b>ID number</b>: {{results[key].idNumber}}
+          </p>
+          <p>
+            <b>Place of birth</b>: {{results[key].placeofBirth}}
+          </p>
+          <p>
+            <b>Place of residence</b>: {{results[key].placeofResidence}}
+          </p>
+          <p>
+            <b>Telephone</b>: {{results[key].telNumber}}
+          </p>
+          <p>
+            <b>Annual income</b>: {{results[key].income}}
+          </p>
+        </mat-card-content>
+        <!-- <mat-card-actions>
+            <button mat-button>LIKE</button>
+            <button mat-button>SHARE</button>
+          </mat-card-actions> -->
+      </mat-card>
+    </td>
+  </tr>
+</table>

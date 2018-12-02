@@ -3,7 +3,7 @@
     "composer": "^0.20.4"
   },
   "name": "fintech3",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "KYC for business clients",
   "scripts": {
     "prepublish": "mkdirp ./dist && composer archive create --sourceType dir --sourceName . -a ./dist/fintech3.bna",
