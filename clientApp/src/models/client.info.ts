@@ -10,4 +10,5 @@ export class ClientInfo {
     placeOfResidence: string = '';
     placeOfBirth: string = '';
     telephone: string = '';
+    idNumber: string = '';
 }
